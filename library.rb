@@ -27,6 +27,8 @@ end
 
 class Borrower
   def initialize(name)
+    @name = name
+    puts "Borrower #{@name} has been added"
   end
 
   def borrowed_books
