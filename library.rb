@@ -15,7 +15,18 @@ class Library
   def available_books
   end
 
+# Public: Add instance of book to the library.
+#
+# book -  Book instance to be added to @books array.
+#
+# Example
+#
+#   add_book(stranger)
+#   # @book => [stranger]
+#
+# Returns @books array with new book instance added.
   def add_book(book)
+    @books.push(book)
   end
 
   def check_out(user, book)
