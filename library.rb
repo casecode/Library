@@ -46,5 +46,8 @@ end
 
 class Book
   def initialize(title, author)
+    @title = title
+    @author = author
+    puts "#{@title} by #{@author} has been created."
   end
 end
