@@ -1,12 +1,22 @@
 class Library
+# Public: Create new empty library.
   def initialize
     @books = []
   end
 
+# Private: Method to return @books array.
   def books
+    @books
   end
 
+# Public: Display status of each book.
+#
+# Returns and puts title, author and status (available/unavailable)
+#   of each book in library.
   def list_books
+    @books.each do |book|
+      puts "#{book.title} by #{book.author}: #{book.status}"
+    end
   end
 
   def borrowed_books
