@@ -25,7 +25,7 @@ class Library
   def borrowed_books
     @books.each do |book|
       if book.status == "checked out"
-        puts "#{book.title} by #{book.author}"
+        puts "#{book.title} by #{book.author}: Checked out by #{book.borrower.name}."
       end
     end
   end
@@ -36,7 +36,7 @@ class Library
   def available_books
     @books.each do |book|
       if book.status == "available"
-        puts "#{book.title} by #{book.author}"
+        puts "#{book.title} by #{book.author} is available."
       end
     end
   end
@@ -80,6 +80,7 @@ class Library
       user.borrowed_books.push(book)
       book.status = "checked out"
       puts "#{user.name} has now checked out #{book.title} by #{book.author}."
+    end
   end
 
 # Public: Check in book.
@@ -137,6 +138,7 @@ class Borrower
   def borrowed_books_list
     @borrowed_books.each do |book|
       puts "#{book.title} by #{book.author}"
+    end
   end
 end
 
