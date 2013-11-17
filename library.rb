@@ -19,10 +19,26 @@ class Library
     end
   end
 
+# Public: Puts borrowed books.
+#
+# Returns title and author of books with status of "unavailable."
   def borrowed_books
+    @books.each do |book|
+      if book.status === "unavailable"
+        puts "#{book.title} by #{book.author}"
+      end
+    end
   end
 
+# Public: Puts available books.
+#
+# Returns title and author of books with status of "available."
   def available_books
+    @books.each do |book|
+      if book.status === "available"
+        puts "#{book.title} by #{book.author}"
+      end
+    end
   end
 
 # Public: Add instance of book to the library.
