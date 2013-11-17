@@ -1,5 +1,5 @@
 class Library
-# Public: Create new empty library.
+# Public: Initialize new empty library.
   def initialize
     @books = []
   end
@@ -11,7 +11,7 @@ class Library
 
 # Public: Display status of each book.
 #
-# Returns and puts title, author and status (available/unavailable)
+# Returns and puts title, author and status (available/checked out)
 #   of each book in library.
   def list_books
     @books.each do |book|
@@ -21,10 +21,10 @@ class Library
 
 # Public: Puts borrowed books.
 #
-# Returns title and author of books with status of "unavailable."
+# Returns title and author of books with status of "checked out."
   def borrowed_books
     @books.each do |book|
-      if book.status === "unavailable"
+      if book.status == "checked out"
         puts "#{book.title} by #{book.author}"
       end
     end
@@ -35,7 +35,7 @@ class Library
 # Returns title and author of books with status of "available."
   def available_books
     @books.each do |book|
-      if book.status === "available"
+      if book.status == "available"
         puts "#{book.title} by #{book.author}"
       end
     end
@@ -55,10 +55,44 @@ class Library
     @books.push(book)
   end
 
+# Public: Check out a book.
+#
+# user - borrower checking out book.
+# book - book being checked out.
+#
+# Example
+# 
+#   check_out(ricardo, stranger)
+#   # stranger.borrower => ricardo
+#   # stranger.status => "checked out"
+#
+# Returns borrower and status of checked out book, as well as
+#   borrowered_books array of borrower, with checked out book added
+#   to array.
   def check_out(user, book)
+    if user.borrowed_books.length == 2
+      return "Sorry, that user already has two books checked out."
+    elsif book.status == "checked out"
+      return "Sorry, that book in not available."
+    else
+      book.borrower = user
+      user.borrowed_books.push(book)
+      book.status = "checked out"
   end
 
+# Public: Check in book.
+#
+# book - Book to be checked in.
+#
+# Example:
+# 
+#   check_in(stranger)
+#
+# Returns book.status of "available" and the borrower_books array
+#   of the book's borrower with the book deleted from the array.
   def check_in(book)
+    book.status = "available"
+    book.borrower.borrowed_books.delete(book.borrower.borrowed_books[book])
   end
 end
 
@@ -116,12 +150,12 @@ class Book
 
 # Public: Adding methods to update values of @status and @borrower.
 #
-# new_status - Sets new status of book (available/unavailble).
+# new_status - Sets new status of book (available/checked out).
 # new_borrower - Sets borrower of book.
 #
 # Examples:
 #
-#   status=("unavailable")
+#   status=("checked out")
 #
 #   borrower=("borrower_name")
 # 
