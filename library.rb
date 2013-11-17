@@ -65,19 +65,21 @@ class Library
 #   check_out(ricardo, stranger)
 #   # stranger.borrower => ricardo
 #   # stranger.status => "checked out"
+#   # ricardo.borrower_books => [stranger]
 #
 # Returns borrower and status of checked out book, as well as
 #   borrowered_books array of borrower, with checked out book added
 #   to array.
   def check_out(user, book)
-    if user.borrowed_books.length == 2
-      return "Sorry, that user already has two books checked out."
+    if user.borrowed_books_count == 2
+      puts "Sorry, that user already has two books checked out."
     elsif book.status == "checked out"
-      return "Sorry, that book in not available."
+      puts "Sorry, that book in not available."
     else
       book.borrower = user
       user.borrowed_books.push(book)
       book.status = "checked out"
+      puts "#{user.name} has now checked out #{book.title} by #{book.author}."
   end
 
 # Public: Check in book.
@@ -97,21 +99,44 @@ class Library
 end
 
 class Borrower
+# Public: Initialize Borrower instance.
+#
+# name - Name of borrower.
+# @borrowed_books - Create empty array of borrower's borrowed books.
   def initialize(name)
     @name = name
+    @borrowed_books = []
     puts "Borrower #{@name} has been added"
   end
 
+# Private: Methods to call borrowed_books array and name of borrower.
+#
+# Returns @borrowed_books array and @name.
   def borrowed_books
+    @borrowed_books
   end
 
   def name
+    @name
   end
 
+# Private: Count of books borrower has checked out.
+#
+# Returns number of books borrower has checked out.
   def borrowed_books_count
+    @borrowed_books.length
   end
 
+# Public: List list of borrowed books.
+#
+# Example:
+#
+#   ricardo.borrower_books_list
+#
+# Returns list of books borrower has checked out.
   def borrowed_books_list
+    @borrowed_books.each do |book|
+      puts "#{book.title} by #{book.author}"
   end
 end
 
@@ -160,11 +185,11 @@ class Book
 #   borrower=("borrower_name")
 # 
 # Return new values of @status and @borrower.
-  def status=(new_value)
-    @status = new_value
+  def status=(new_status)
+    @status = new_status
   end
 
-  def borrower=(new_value)
-    @borrower = new_value
+  def borrower=(new_borrower)
+    @borrower = new_borrower
   end
 end
