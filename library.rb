@@ -1,20 +1,19 @@
 class Library
+  attr_reader :books
+
 # Public: Initialize new empty library.
   def initialize
     @books = []
-  end
-
-# Private: Method to return @books array.
-  def books
-    @books
   end
 
 # Public: Display status of each book.
 #
 # Returns and puts title, author and status (available/checked out)
 #   of each book in library.
-  def list_books
-    @books.each do |book|
+  def list_books(books = nil)
+    books ||= @books
+
+    books.each do |book|
       puts "#{book.title} by #{book.author}: #{book.status}"
     end
   end
@@ -28,6 +27,13 @@ class Library
         puts "#{book.title} by #{book.author}: Checked out by #{book.borrower.name}."
       end
     end
+
+    checked_out_books, available_books = @books.partition do |book|
+      book.status == "checked out"
+    end
+
+    list_books checked_out_books
+
   end
 
 # Public: Puts available books.
@@ -55,21 +61,21 @@ class Library
     @books.push(book)
   end
 
-# Public: Check out a book.
-#
-# user - borrower checking out book.
-# book - book being checked out.
-#
-# Example
-# 
-#   check_out(ricardo, stranger)
-#   # stranger.borrower => ricardo
-#   # stranger.status => "checked out"
-#   # ricardo.borrower_books => [stranger]
-#
-# Returns borrower and status of checked out book, as well as
-#   borrowered_books array of borrower, with checked out book added
-#   to array.
+  # Public: Check out a book.
+  #
+  # user - borrower checking out book.
+  # book - book being checked out.
+  #
+  # Example
+  #
+  #   check_out(ricardo, stranger)
+  #   # stranger.borrower => ricardo
+  #   # stranger.status => "checked out"
+  #   # ricardo.borrower_books => [stranger]
+  #
+  # Returns borrower and status of checked out book, as well as
+  # borrowered_books array of borrower, with checked out book added
+  # to array.
   def check_out(user, book)
     if user.borrowed_books_count == 2
       puts "Sorry, that user already has two books checked out."
@@ -88,7 +94,7 @@ class Library
 # book - Book to be checked in.
 #
 # Example:
-# 
+#
 #   check_in(stranger)
 #
 # Returns book.status of "available" and the borrower_books array
@@ -146,18 +152,17 @@ end
 #
 # title - Title of book to be added.
 # author - Author of book to be added.
-# @status - Set status to "available" when new book instance created.
-# @borrower - Borrower to be set when book checked in or out.
 class Book
   def initialize(title, author)
     @title = title
     @author = author
+    # Set status to "available" when new book instance created.
     @status = "available"
     @borrower = nil
     puts "#{@title} by #{@author} has been created."
   end
 
-# Private: Adding methods to return title, author,
+# Public: Adding methods to return title, author,
 #   status and borrower of book.
   def title
     @title
@@ -185,7 +190,7 @@ class Book
 #   status=("checked out")
 #
 #   borrower=("borrower_name")
-# 
+#
 # Return new values of @status and @borrower.
   def status=(new_status)
     @status = new_status
